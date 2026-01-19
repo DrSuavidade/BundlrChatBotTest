@@ -1,0 +1,5 @@
+{
+  "name": "n8n Chat Interface",
+  "description": "A high-fidelity ChatGPT-style interface that connects to your custom n8n webhooks for AI-powered automation workflows.",
+  "requestFramePermissions": []
+}
