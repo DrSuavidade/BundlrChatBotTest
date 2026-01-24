@@ -1,11 +1,17 @@
 
 export type Role = 'user' | 'assistant';
 
+export interface Action {
+  label: string;
+  value: string;
+}
+
 export interface Message {
   id: string;
   role: Role;
   content: string;
   timestamp: number;
+  actions?: Action[];
 }
 
 export interface ChatSession {

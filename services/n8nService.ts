@@ -3,7 +3,8 @@ import { N8nConfig } from '../types';
 
 export const sendMessageToN8n = async (
   config: N8nConfig,
-  text: string
+  text: string,
+  sessionId: string
 ): Promise<string> => {
   if (!config.webhookUrl) {
     throw new Error('n8n Webhook URL is not configured.');
@@ -18,6 +19,7 @@ export const sendMessageToN8n = async (
       body: JSON.stringify({
         [config.payloadKey]: text,
         timestamp: new Date().toISOString(),
+        sessionId: sessionId,
       }),
     });
 
@@ -33,11 +35,11 @@ export const sendMessageToN8n = async (
     if (contentType && contentType.includes('application/json')) {
       try {
         const data = JSON.parse(rawText);
-        
+
         // Attempt to find the response content based on user configuration
         // Often n8n returns an array or a specific key
         const result = Array.isArray(data) ? data[0] : data;
-        
+
         // Extract output based on config or common keys
         const output = result[config.responseKey] || result.output || result.message || result;
 
