@@ -39,7 +39,8 @@ const App: React.FC = () => {
     return saved
       ? JSON.parse(saved)
       : {
-          webhookUrl: "",
+          webhookUrl:
+            "https://n8n.srv1068628.hstgr.cloud/webhook/02f872dd-4bfb-484d-bc18-2a81f28fe05c",
           payloadKey: "chatInput",
           responseKey: "output",
         };
