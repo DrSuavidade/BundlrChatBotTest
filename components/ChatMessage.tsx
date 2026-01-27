@@ -33,7 +33,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
         </div>
         <div className="flex-1 space-y-2 overflow-hidden">
           <p className="text-sm font-semibold text-gray-400">
-            {isUser ? "You" : "n8n Assistant"}
+            {isUser ? "You" : "Assistente Muito Seguro"}
           </p>
           <div className="prose prose-invert max-w-none text-gray-200 leading-relaxed break-words whitespace-pre-wrap">
             {message.content}

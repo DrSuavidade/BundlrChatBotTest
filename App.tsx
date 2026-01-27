@@ -32,7 +32,7 @@ const App: React.FC = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [isWidgetMode, setIsWidgetMode] = useState(false);
+  const [isWidgetMode, setIsWidgetMode] = useState(true);
   const [isWidgetOpen, setIsWidgetOpen] = useState(true);
   const [config, setConfig] = useState<N8nConfig>(() => {
     const saved = localStorage.getItem("n8n-config");
@@ -124,7 +124,10 @@ const App: React.FC = () => {
     setCurrentSessionId(newSession.id);
     setIsSidebarOpen(false);
     setError(null);
-  }, []);
+    if (isWidgetMode) {
+      setIsWidgetOpen(true);
+    }
+  }, [isWidgetMode]);
 
   const handleSendMessage = async (
     e?: React.FormEvent,
@@ -320,10 +323,10 @@ const App: React.FC = () => {
               </div>
               <div className="flex-1 overflow-hidden">
                 <p className="text-xs font-medium text-gray-300 truncate">
-                  Demo User
+                  Muito Seguro Chatbot
                 </p>
                 <p className="text-[10px] text-gray-500 truncate">
-                  n8n Connected
+                  Bundlr Productions
                 </p>
               </div>
             </div>
