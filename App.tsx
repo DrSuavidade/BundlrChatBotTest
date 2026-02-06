@@ -102,6 +102,20 @@ const App: React.FC = () => {
       {
         label: "1) Simulação (Vida / Auto / Saúde / Poupanças / Empresas)",
         value: "Quero realizar uma simulação",
+        subPrompt: "E que tipo de seguro é que tenciona realizar?",
+        subActions: [
+          { label: "Vida", value: "Eu quero realizar um seguro de vida" },
+          { label: "Auto", value: "Eu quero realizar um seguro de auto" },
+          { label: "Saúde", value: "Eu quero realizar um seguro de saúde" },
+          {
+            label: "Poupanças",
+            value: "Eu quero realizar um seguro de poupanças",
+          },
+          {
+            label: "Empresas",
+            value: "Eu quero realizar um seguro de empresas",
+          },
+        ],
       },
       {
         label: "2) Estado de um pedido",
@@ -110,6 +124,10 @@ const App: React.FC = () => {
       {
         label: "3) Participar sinistro",
         value: "Quero participar um sinistro",
+      },
+      {
+        label: "4) Contactar especialista",
+        value: "Quero entrar em contacto com um especialista",
       },
     ],
   });

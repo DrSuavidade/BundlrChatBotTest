@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { User, Bot } from "lucide-react";
-import { Message } from "../types";
+import { Message, Action } from "../types";
 
 interface ChatMessageProps {
   message: Message;
@@ -14,6 +14,24 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
   isWidget,
 }) => {
   const isUser = message.role === "user";
+  const [expandedActionIndex, setExpandedActionIndex] = useState<number | null>(
+    null,
+  );
+
+  const handleActionClick = (action: Action, index: number) => {
+    if (action.subActions && action.subActions.length > 0) {
+      // Toggle expanded state for actions with sub-actions
+      setExpandedActionIndex(expandedActionIndex === index ? null : index);
+    } else {
+      // Direct send for actions without sub-actions
+      onActionClick?.(action.value);
+    }
+  };
+
+  const handleSubActionClick = (value: string) => {
+    onActionClick?.(value);
+    setExpandedActionIndex(null);
+  };
 
   return (
     <div
@@ -41,13 +59,42 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
           {message.actions && message.actions.length > 0 && (
             <div className="flex flex-col gap-2 mt-4">
               {message.actions.map((action, index) => (
-                <button
-                  key={index}
-                  onClick={() => onActionClick?.(action.value)}
-                  className="text-left px-4 py-3 bg-[#2f2f2f] hover:bg-[#3f3f3f] text-red-500 border border-[#3f3f3f] hover:border-red-500/30 rounded-lg text-sm transition-all w-fit"
-                >
-                  {action.label}
-                </button>
+                <div key={index} className="flex flex-col gap-2">
+                  <button
+                    onClick={() => handleActionClick(action, index)}
+                    className={`text-left px-4 py-3 bg-[#2f2f2f] hover:bg-[#3f3f3f] text-red-500 border border-[#3f3f3f] hover:border-red-500/30 rounded-lg text-sm transition-all w-fit ${
+                      expandedActionIndex === index
+                        ? "border-red-500/50 bg-[#3f3f3f]"
+                        : ""
+                    }`}
+                  >
+                    {action.label}
+                  </button>
+
+                  {/* Sub-actions section */}
+                  {expandedActionIndex === index && action.subActions && (
+                    <div className="ml-4 pl-4 border-l-2 border-red-500/30 space-y-2">
+                      {action.subPrompt && (
+                        <p className="text-sm text-gray-300 py-2">
+                          {action.subPrompt}
+                        </p>
+                      )}
+                      <div className="flex flex-wrap gap-2">
+                        {action.subActions.map((subAction, subIndex) => (
+                          <button
+                            key={subIndex}
+                            onClick={() =>
+                              handleSubActionClick(subAction.value)
+                            }
+                            className="px-4 py-2 bg-red-600/20 hover:bg-red-600/40 text-red-400 hover:text-red-300 border border-red-500/30 hover:border-red-500/50 rounded-lg text-sm transition-all"
+                          >
+                            {subAction.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
               ))}
             </div>
           )}

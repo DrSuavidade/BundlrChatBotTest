@@ -1,9 +1,16 @@
 
 export type Role = 'user' | 'assistant';
 
+export interface SubAction {
+  label: string;
+  value: string;
+}
+
 export interface Action {
   label: string;
   value: string;
+  subActions?: SubAction[];
+  subPrompt?: string;
 }
 
 export interface Message {
