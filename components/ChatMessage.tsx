@@ -57,7 +57,7 @@ const ChatMessage: React.FC<ChatMessageProps> = ({
             {message.content}
           </div>
           {message.actions && message.actions.length > 0 && (
-            <div className="flex flex-col gap-2 mt-4">
+            <div className="flex flex-wrap gap-2 mt-4">
               {message.actions.map((action, index) => (
                 <div key={index} className="flex flex-col gap-2">
                   <button

@@ -22,6 +22,33 @@ import MockWebsite from "./components/MockWebsite";
 import SettingsModal from "./components/SettingsModal";
 import { sendMessageToN8n } from "./services/n8nService";
 
+// Function to detect if a message is a yes/no question
+const detectYesNoQuestion = (text: string): boolean => {
+  const lowerText = text.toLowerCase();
+
+  // Check for explicit yes/no patterns in Portuguese
+  const yesNoPatterns = [
+    /\(sim\/não\)/i,
+    /\(sim ou não\)/i,
+    /sim\/não/i,
+    /sim ou não\?/i,
+    /\?.*\(s\/n\)/i,
+    /confirma.*\?/i,
+    /autoriza.*\?/i,
+    /concorda.*\?/i,
+    /aceita.*\?/i,
+    /deseja.*\?/i,
+  ];
+
+  return yesNoPatterns.some((pattern) => pattern.test(lowerText));
+};
+
+// Function to create yes/no action buttons
+const createYesNoActions = () => [
+  { label: "Sim", value: "Sim" },
+  { label: "Não", value: "Não" },
+];
+
 const App: React.FC = () => {
   // State
   const [sessions, setSessions] = useState<ChatSession[]>([]);
@@ -208,11 +235,16 @@ const App: React.FC = () => {
 
     try {
       const response = await sendMessageToN8n(config, text, activeSessionId);
+
+      // Check if the response is a yes/no question and add action buttons
+      const isYesNoQuestion = detectYesNoQuestion(response);
+
       const assistantMsg: Message = {
         id: `ai-${Date.now()}`,
         role: "assistant",
         content: response,
         timestamp: Date.now(),
+        ...(isYesNoQuestion && { actions: createYesNoActions() }),
       };
 
       setSessions((prev) =>
